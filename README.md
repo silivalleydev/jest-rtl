@@ -22,7 +22,99 @@ npm install --save-dev @testing-library/react @testing-library/dom
 - 설명: Jest는 JavaScript 테스팅 프레임워크로, React 환경에 최적화되어 있습니다.
 
 ```
-npm install --save-dev jest
+npm install --save-dev jest @jest/globals
+npm install --save-dev @babel/preset-env babel-jest
+```
+
+- 설정
+
+1. `.babelrc`
+```
+{
+  "presets": ["@babel/preset-env"]
+}
+```
+
+2. `jest.config.js` 최소 커버리지 설정
+```js
+module.exports = {
+    collectCoverage: true, // 커버리지 리포트 활성화
+    collectCoverageFrom: [
+      "src/**/*.{js,jsx,ts,tsx}", // 커버리지 계산 대상 파일 패턴
+      "!src/**/*.test.js",       // 테스트 파일 제외
+      "!src/index.js",           // 진입 파일 제외
+      "!src/setupTests.js",      // Jest 설정 파일 제외
+    ],
+    coverageDirectory: "coverage", // 커버리지 리포트 출력 디렉토리
+    coverageReporters: ["json", "lcov", "text", "clover"], // 출력 포맷 설정
+    coverageThreshold: { // 최소 커버리지 기준 설정
+      global: {
+        branches: 80,
+        functions: 80,
+        lines: 80,
+        statements: 80,
+      },
+    },
+  };
+```
+
+ex 커버리지 실패시
+----------|---------|----------|---------|---------|-------------------
+File      | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+----------|---------|----------|---------|---------|-------------------
+All files |    87.5 |       75 |     100 |    87.5 |                   
+ util.js  |    87.5 |       75 |     100 |    87.5 | 12                
+----------|---------|----------|---------|---------|-------------------
+Jest: "global" coverage threshold for branches (80%) not met: 75%
+
+1. % Stmts (Statements)
+의미: 코드에서 실행 가능한 전체 명령문(Statement) 중 테스트된 명령문의 비율.
+예: if, for, while, 변수 선언 등 실행 가능한 모든 코드 조각.
+목적: 코드 전체에서 실행 가능한 모든 명령문이 테스트되었는지 확인.
+
+```js
+const add = (a, b) => a + b; // 1개의 Statement
+console.log(add(2, 3));      // 1개의 Statement
+```
+
+2. % Branch (Branches)
+의미: 조건문(Conditional Statement)의 모든 분기(Branch) 중 테스트된 분기의 비율.
+예: if, else, switch, 삼항 연산자 등에서 발생하는 분기.
+목적: 조건문 내의 모든 분기가 테스트되었는지 확인
+```js
+function checkValue(val) {
+  if (val > 10) {      // Branch 1
+    return "big";
+  } else {             // Branch 2
+    return "small";
+  }
+}
+```
+
+3. % Funcs (Functions)
+의미: 코드에서 정의된 전체 함수 중 테스트된 함수의 비율.
+예: 선언된 모든 함수(일반 함수, 클래스 메서드, 화살표 함수 등).
+목적: 함수의 동작이 제대로 테스트되었는지 확인.
+```js
+function add(a, b) {
+  return a + b;
+}
+
+function multiply(a, b) {
+  return a * b;
+}
+```
+
+4. % Lines
+의미: 코드에서 실행된 **전체 코드 라인(Line)**의 비율.
+목적: 모든 코드 라인이 실행되었는지 확인.
+
+```js
+function add(a, b) {
+  return a + b; // Line 2
+}
+
+console.log(add(2, 3)); // Line 4
 ```
 
 ### Jest와 RTL의 조합이 강력한 이유
