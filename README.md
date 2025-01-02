@@ -117,6 +117,30 @@ function add(a, b) {
 console.log(add(2, 3)); // Line 4
 ```
 
+### CI/CD Github Action 설정
+- `.github/workflows/ci.yml`
+```yml
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: npm install
+      - run: npm test
+
+```
+
 ### Jest와 RTL의 조합이 강력한 이유
 
 Jest의 빠른 실행, Mocking, Snapshot Testing 기능이 RTL과 결합하면 테스트의 생산성이 극대화됩니다.
