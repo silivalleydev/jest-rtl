@@ -11,7 +11,7 @@ const EmailForm = () => {
             alert('이메일이 맞습니다.')
             setIsVaild(true);
         } else {
-            alert('이메일이 틀렸씁니다.')
+            alert('이메일이 틀렸습니다.')
         }
     }
     
