@@ -14,4 +14,7 @@ describe('isPositiveNumber Function Test', () => {
     test('Zero false', () => {
         expect(isPositiveNumber(0)).toBe(false);
     })
+    // test('Negative Number false', () => {
+    //     expect(isPositiveNumber(-1)).toBe(false);
+    // })
 })
