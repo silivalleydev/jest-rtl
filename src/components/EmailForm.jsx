@@ -14,6 +14,7 @@ const EmailForm = () => {
             alert('이메일이 틀렸씁니다.')
         }
     }
+    
     return (
         <>
             <div>
